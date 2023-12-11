@@ -1,6 +1,8 @@
 # OpenPowerlifting - Predicting TotalKg in Powerlifting Competitions
 ### Overview
-This project focuses on predicting the total lifted weight (TotalKg) in powerlifting competitions using machine learning regression techniques. See below for requirements and usage. Accuracies and Metrics for saved models (see "Models/") are quite good.  
+This project focuses on predicting the total lifted weight (TotalKg) in [powerlifting competitions](https://www.kaggle.com/datasets/open-powerlifting/powerlifting-database/data) using machine learning regression techniques. The intent here is to determine if a ML model can accurately predict a total weight with minimal information about a competitor and without one of their top lifts, which seems somewhat unintuitive given the discepancies between competitors and their favored lift.  
+
+ See below for requirements and usage. Accuracies and Metrics for saved models (see "Models/") are quite good.  
 
 ### Project Structure
 #### Requirements
@@ -23,3 +25,6 @@ Libraries: pandas, scikit-learn, torch, matplotlib, numpy, prettytable
 ### Notes:
 - In the persisted pickle models (located in Models/) the model name is the value that we don't have and are predicting for. 
     - i.e. Models/lift_model_Squat.pkl is predicting totalKg with no squat information / feature.
+- The "All" Model is trained with all of the lift data provided, it is a proof of concept for the architecture and has a perfect correlation, as it has all the data.
+- The "None" Model is trained with none of the top 3 lift data, and is a representation of the predicatibility of a lifters totalKg with only minimal biographical information. 
+- The database is fairly large, so it is not included. It can be found [here](https://www.kaggle.com/datasets/open-powerlifting/powerlifting-database/data)
