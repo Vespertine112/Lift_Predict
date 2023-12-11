@@ -19,3 +19,7 @@ Libraries: pandas, scikit-learn, torch, matplotlib, numpy, prettytable
 - Model Evaluation: evaluates the model's performance using metrics such as Average Test Loss, Average R-squared Score, and Average RMSE.
 - Results Visualization: visualizations with plots of actual vs. predicted values and residuals plots. Figures can be saved using the SAVE_FIGS flag.
 - Table Generation: A table with example inputs and predictions is generated using the PrettyTable library. Tables can be saved as text files if the SAVE_CHARTS flag is set.
+
+### Notes:
+- In the persisted pickle models (located in Models/) the model name is the value that we don't have and are predicting for. 
+    - i.e. Models/lift_model_Squat.pkl is predicting totalKg with no squat information / feature.
