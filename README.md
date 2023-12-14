@@ -1,6 +1,6 @@
 # OpenPowerlifting - Predicting TotalKg in Powerlifting Competitions
 ### Overview
-This project focuses on predicting the total lifted weight (TotalKg) in [powerlifting competitions](https://www.kaggle.com/datasets/open-powerlifting/powerlifting-database/data) using machine learning regression techniques. The intent here is to determine if a ML model can accurately predict a total weight with minimal information about a competitor and without one of their top lifts, which seems somewhat unintuitive given the discepancies between competitors and their favored lift.  
+This project focuses on predicting the total lifted weight (TotalKg) in [powerlifting competitions](https://www.kaggle.com/datasets/open-powerlifting/powerlifting-database/data) using machine learning regression techniques. The intent here is to determine if a ML model can accurately predict a total weight with minimal information about a competitor and without one of their top lifts, which seems somewhat unintuitive given the discepancies between competitors and their favored lift. The training dataset contains 327,586 competitors and the test dataset contains 140,394 competitors. 
 
  See below for requirements and usage. Accuracies and Metrics for saved models (see "Models/") are quite good.  
 
@@ -28,3 +28,6 @@ Libraries: pandas, scikit-learn, torch, matplotlib, numpy, prettytable
 - The "All" Model is trained with all of the lift data provided, it is a proof of concept for the architecture and has a perfect correlation, as it has all the data.
 - The "None" Model is trained with none of the top 3 lift data, and is a representation of the predicatibility of a lifters totalKg with only minimal biographical information. 
 - The database is fairly large, so it is not included. It can be found [here](https://www.kaggle.com/datasets/open-powerlifting/powerlifting-database/data)
+
+### Side-Notes:
+- The "None" Model had an R<sup>2</sup> value of 0.7513. This is very suprising and indicates that Sex, Equipment, Age, and Body Weight alone are good predictors of a competitors final total. 
