@@ -21,7 +21,7 @@ LOAD_MODEL = True
 SAVE_FIGS = True
 SAVE_CHARTS = True
 
-MODEL_NAME = "All"
+MODEL_NAME = "All" # Saving & Loading the Model!
 
 try:
     from prettytable import PrettyTable
@@ -31,7 +31,9 @@ except ImportError:
 
 # ==================================================================================================
 # The Lift Model: Brayden Hill - A02287193 - Hillbgh@gmail.com
-#
+# NOTE: This will not run out of the box! You need to download the dataset! See README
+# If you want to predict a given lift, remove it from the standard_scale_features array!
+# Finally, getting a good model requires some (minimal) bulldozing. Target a loss of around 10 in epoch 0!
 # ==================================================================================================
 
 # ==================================================================================================
@@ -95,7 +97,6 @@ max_scale_features = ["BodyweightKg"]
 data = data.drop(columns=drop_features)
 data = data.dropna()
 
-# Assuming "TotalKg" is your target variable
 X = data.drop(columns=["TotalKg"])
 y = pd.DataFrame(data["TotalKg"])
 
@@ -192,7 +193,7 @@ if RUN_TABLE:
     original_feature_names.extend(max_scale_features)
     results_table.field_names = [
         "Sample ID",
-        *original_feature_names,  # Include original feature names
+        *original_feature_names,  # Unpack the feature names
         "Actual TotalKg",
         "Predicted TotalKg",
     ]
@@ -200,6 +201,8 @@ if RUN_TABLE:
 loaded_ANN.eval()
 with torch.no_grad():
     for i, (batchX, batchY) in enumerate(gen_next_batch(x_test, y_test, 1)):
+        if (i % 100) == 0: print(f"Evaluating Batch {i}")
+
         (batchX, batchY) = (
             torch.from_numpy(np.array(batchX).astype(np.float32)).to(device),
             torch.from_numpy(np.array(batchY).astype(np.float32)).to(device),
@@ -218,11 +221,12 @@ with torch.no_grad():
             np.sqrt(mean_squared_error(batchY.cpu().numpy(), predictions.cpu().numpy()))
         )
 
-        # Create a table
+        # Creates a table if you have PrettyTable
         if RUN_TABLE and i < 32:
             for idx in range(len(batchX)):
-                original_categorical_features = preprocessor.named_transformers_["onehotencoder"].inverse_transform(batchX[:, :-5].cpu().numpy())
-                original_standard_scale_features = preprocessor.named_transformers_["standardscaler"].inverse_transform(batchX[:, -5:-1].cpu().numpy())
+                bound_len = len(standard_scale_features) + len(max_scale_features)
+                original_categorical_features = preprocessor.named_transformers_["onehotencoder"].inverse_transform(batchX[:, :-bound_len].cpu().numpy())
+                original_standard_scale_features = preprocessor.named_transformers_["standardscaler"].inverse_transform(batchX[:, -bound_len:-1].cpu().numpy())
                 original_max_scale_features = preprocessor.named_transformers_["minmaxscaler"].inverse_transform(batchX[:, -1:].cpu().numpy())
                 original_input_features = np.concatenate((original_categorical_features, original_standard_scale_features, original_max_scale_features), axis=1)
                 formatted_values = [
